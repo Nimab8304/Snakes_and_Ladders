@@ -45,6 +45,7 @@ public class Board {
                 return;
             }
         }
+
         PrintBoard.printboard(player,board,side);
     }
 
