@@ -1,4 +1,4 @@
 package ir.ac.kntu.gamelogic;
 
-public class FriendlySnake {
+public class FriendlySnake extends Snake{
 }
