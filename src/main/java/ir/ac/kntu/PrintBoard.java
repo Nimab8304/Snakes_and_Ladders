@@ -1,9 +1,8 @@
 package ir.ac.kntu;
 
-import ir.ac.kntu.gamelogic.Board;
-import ir.ac.kntu.gamelogic.DiceEnum;
-import ir.ac.kntu.gamelogic.FriendlySnake;
-import ir.ac.kntu.gamelogic.Player;
+import ir.ac.kntu.gamelogic.*;
+
+import java.util.Scanner;
 
 
 public class PrintBoard {
@@ -11,6 +10,8 @@ public class PrintBoard {
     public static void printboard(Player player, String[][] board, int side) {
         System.out.println("Dice: " + DiceEnum.values()[side]);
         System.out.println("Health: " + player.getHeart());
+        System.out.println(CreateSnake.cntFriendlySnake);
+        System.out.println(CreateSnake.cntNormalSnake);
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 if (board[i][j].equals("1")) {
@@ -33,6 +34,9 @@ public class PrintBoard {
         if (player.getxPositionPlayer() == 0 && player.getyPositionPlayer() == board.length - 1) {
             System.exit(0);
         }
+        System.out.println("Press Enter to continue-> ");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
         Board.handlemove(player, board);
     }
 }

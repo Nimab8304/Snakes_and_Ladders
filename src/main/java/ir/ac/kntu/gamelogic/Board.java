@@ -63,8 +63,12 @@ public class Board {
         if (friendlySnakes.size() > 0) {
             setFriendlySnakesOnBoard(board,player);
         }
-
+        if (normalSnakes.size() > 0) {
+            setNormalSnakesSnakesOnBoard(board,player);
+        }
+        CreateSnake.changePosition(board);
         PrintBoard.printboard(player, board, side);
+
     }
 
     public static void twoUp(Player player) {
@@ -138,6 +142,25 @@ public class Board {
                         break;
                     } else {
                         board[i][j] = "0";
+                    }
+                }
+            }
+        }
+    }
+
+    public static void setNormalSnakesSnakesOnBoard(String[][] board,Player player) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                for (NormalSnake normalSnake:Board.normalSnakes) {
+                    if (i == player.getxPositionPlayer() && j == player.getyPositionPlayer()) {
+                        board[i][j] = "1";
+                        break;
+                    } else if (i == normalSnake.getxPositionSnakeHead() && j == normalSnake.getyPositionSnakeHead()) {
+                        board[i][j] = "N" + Board.normalSnakes.indexOf(normalSnake);
+                        break;
+                    } else if (i == normalSnake.getxPositionSnakeTail() && j == normalSnake.getyPositionSnakeTail()) {
+                        board[i][j] = "n" + Board.normalSnakes.indexOf(normalSnake);
+                        break;
                     }
                 }
             }
