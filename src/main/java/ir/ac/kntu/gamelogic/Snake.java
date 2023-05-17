@@ -41,7 +41,7 @@ public class Snake {
         this.yPositionSnakeTail = yPositionSnakeTail;
     }
 
-    public void moveOnSnake(Player player, Snake snake){
+    public static void moveOnSnake(Player player, Snake snake){
         player.setxPositionPlayer(snake.getxPositionSnakeTail());
         player.setyPositionPlayer(snake.getyPositionSnakeTail());
     }

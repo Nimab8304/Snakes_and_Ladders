@@ -3,10 +3,10 @@ package ir.ac.kntu.gamelogic;
 import ir.ac.kntu.PrintBoard;
 
 import java.util.ArrayList;
+
 import java.util.Scanner;
 
 public class Board {
-    public static int lenght;
 
     public static ArrayList<AngrySnake> angrySnakes = new ArrayList<>();
 
@@ -16,24 +16,22 @@ public class Board {
 
     public static int scalable() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the size of board: ");
-        int size = scanner.nextInt();
-        lenght = size;
-        return size;
+        System.out.println("Enter the size of board: ");
+        return Integer.parseInt(scanner.nextLine());
     }
 
 
     public static void start() {
         Player player = new Player();
-        int size = Board.scalable();
+        int size = scalable();
         String[][] board = new String[size][size];
         player.setxPositionPlayer(size - 1);
         player.setyPositionPlayer(0);
-        CreateSnake.createSnake();
-        handlemove(player, board);
+        CreateSnake.createSnake(size);
+        handlemove(player, board,size);
     }
 
-    public static void handlemove(Player player, String[][] board) {
+    public static void handlemove(Player player, String[][] board,int size) {
         int side = Dice.getside();
         switch (side) {
             case 0 -> twoUp(player);
@@ -59,16 +57,18 @@ public class Board {
                 }
             }
         }
-
         if (friendlySnakes.size() > 0) {
             setFriendlySnakesOnBoard(board,player);
         }
         if (normalSnakes.size() > 0) {
             setNormalSnakesSnakesOnBoard(board,player);
         }
-        CreateSnake.changePosition(board);
-        PrintBoard.printboard(player, board, side);
-
+        if (angrySnakes.size() > 0) {
+            setAngrySnakesSnakesOnBoard(board,player);
+        }
+        CreateSnake.changePosition(board,size);
+        moveOnSnakes(player);
+        PrintBoard.printboard(player, board, side,size);
     }
 
     public static void twoUp(Player player) {
@@ -88,7 +88,6 @@ public class Board {
             player.setyPositionPlayer(player.getyPositionPlayer() - 2);
         }
     }
-
 
     public static void oneLeft(Player player) {
         if (player.getyPositionPlayer() - 1 >= 0) {
@@ -167,4 +166,43 @@ public class Board {
         }
     }
 
+    public static void setAngrySnakesSnakesOnBoard(String[][] board,Player player) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                for (AngrySnake angrySnake:Board.angrySnakes) {
+                    if (i == player.getxPositionPlayer() && j == player.getyPositionPlayer()) {
+                        board[i][j] = "1";
+                        break;
+                    } else if (i == angrySnake.getxPositionSnakeHead() && j == angrySnake.getyPositionSnakeHead()) {
+                        board[i][j] = "A" + Board.angrySnakes.indexOf(angrySnake);
+                        break;
+                    } else if (i == angrySnake.getxPositionSnakeTail() && j == angrySnake.getyPositionSnakeTail()) {
+                        board[i][j] = "a" + Board.angrySnakes.indexOf(angrySnake);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public static void moveOnSnakes(Player player){
+        for (FriendlySnake friendlySnake : friendlySnakes) {
+            if (player.getxPositionPlayer() == friendlySnake.getxPositionSnakeHead() &&
+                    player.getyPositionPlayer() == friendlySnake.getyPositionSnakeHead()) {
+                FriendlySnake.moveOnSnake(player, friendlySnake);
+            }
+        }
+        for (AngrySnake angrySnake : angrySnakes) {
+            if (player.getxPositionPlayer() == angrySnake.getxPositionSnakeHead() &&
+                    player.getyPositionPlayer() == angrySnake.getyPositionSnakeHead()) {
+                AngrySnake.moveOnAngrySnake(player, angrySnake);
+            }
+        }
+        for (NormalSnake normalSnake : normalSnakes) {
+            if (player.getxPositionPlayer() == normalSnake.getxPositionSnakeHead() &&
+                    player.getyPositionPlayer() == normalSnake.getyPositionSnakeHead()) {
+                FriendlySnake.moveOnSnake(player, normalSnake);
+            }
+        }
+    }
 }
