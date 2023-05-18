@@ -44,8 +44,7 @@ public class Board {
             case 7 -> oneDown(player, board);
             case 8 -> extraHealth(player);
             default -> {
-                return;
-            }
+                return;}
         }
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
@@ -57,6 +56,12 @@ public class Board {
                 }
             }
         }
+        if (checkHeadOnHead()){
+            angrySnakes.clear();
+            normalSnakes.clear();
+            friendlySnakes.clear();
+            CreateSnake.createSnake(size);
+        }
         if (friendlySnakes.size() > 0) {
             setFriendlySnakesOnBoard(board,player);
         }
@@ -67,6 +72,9 @@ public class Board {
             setAngrySnakesSnakesOnBoard(board,player);
         }
         CreateSnake.changePosition(board,size);
+        if (checkHeadOnTail()){
+            CreateSnake.changePosition(board,size);
+        }
         moveOnSnakes(player);
         PrintBoard.printboard(player, board, side,size);
     }
@@ -134,10 +142,10 @@ public class Board {
                         board[i][j] = "1";
                         break;
                     } else if (i == friendlySnake.getxPositionSnakeHead() && j == friendlySnake.getyPositionSnakeHead()) {
-                        board[i][j] = "F" + Board.friendlySnakes.indexOf(friendlySnake);
+                        board[i][j] = board[i][j] +"F" + Board.friendlySnakes.indexOf(friendlySnake);
                         break;
                     } else if (i == friendlySnake.getxPositionSnakeTail() && j == friendlySnake.getyPositionSnakeTail()) {
-                        board[i][j] = "f" + Board.friendlySnakes.indexOf(friendlySnake);
+                        board[i][j] = board[i][j] +"f" + Board.friendlySnakes.indexOf(friendlySnake);
                         break;
                     } else {
                         board[i][j] = "0";
@@ -155,10 +163,10 @@ public class Board {
                         board[i][j] = "1";
                         break;
                     } else if (i == normalSnake.getxPositionSnakeHead() && j == normalSnake.getyPositionSnakeHead()) {
-                        board[i][j] = "N" + Board.normalSnakes.indexOf(normalSnake);
+                        board[i][j] =board[i][j] + "N" + Board.normalSnakes.indexOf(normalSnake);
                         break;
                     } else if (i == normalSnake.getxPositionSnakeTail() && j == normalSnake.getyPositionSnakeTail()) {
-                        board[i][j] = "n" + Board.normalSnakes.indexOf(normalSnake);
+                        board[i][j] = board[i][j] +"n" + Board.normalSnakes.indexOf(normalSnake);
                         break;
                     }
                 }
@@ -174,10 +182,10 @@ public class Board {
                         board[i][j] = "1";
                         break;
                     } else if (i == angrySnake.getxPositionSnakeHead() && j == angrySnake.getyPositionSnakeHead()) {
-                        board[i][j] = "A" + Board.angrySnakes.indexOf(angrySnake);
+                        board[i][j] = board[i][j] +"A" + Board.angrySnakes.indexOf(angrySnake);
                         break;
                     } else if (i == angrySnake.getxPositionSnakeTail() && j == angrySnake.getyPositionSnakeTail()) {
-                        board[i][j] = "a" + Board.angrySnakes.indexOf(angrySnake);
+                        board[i][j] =board[i][j] + "a" + Board.angrySnakes.indexOf(angrySnake);
                         break;
                     }
                 }
@@ -205,4 +213,83 @@ public class Board {
             }
         }
     }
+
+    public static boolean checkHeadOnHead(){
+        for (AngrySnake angrySnake:angrySnakes){
+            for (FriendlySnake friendlySnake:friendlySnakes){
+                if (angrySnake.getxPositionSnakeHead()==friendlySnake.getxPositionSnakeHead()&&
+                        angrySnake.getyPositionSnakeHead()==friendlySnake.getyPositionSnakeHead()){
+                    return true;
+                }
+            }
+        }
+        for (AngrySnake angrySnake:angrySnakes){
+            for (NormalSnake normalSnake:normalSnakes){
+                if (angrySnake.getxPositionSnakeHead()==normalSnake.getxPositionSnakeHead()&&
+                        angrySnake.getyPositionSnakeHead()==normalSnake.getyPositionSnakeHead()){
+                    return true;
+                }
+            }
+        }
+        for (FriendlySnake friendlySnake:friendlySnakes){
+            for (NormalSnake normalSnake:normalSnakes){
+                if (friendlySnake.getxPositionSnakeHead()==normalSnake.getxPositionSnakeHead()&&
+                        friendlySnake.getyPositionSnakeHead()==normalSnake.getyPositionSnakeHead()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkHeadOnTail(){
+        for (AngrySnake angrySnake:angrySnakes){
+            for (FriendlySnake friendlySnake:friendlySnakes){
+                if (angrySnake.getxPositionSnakeHead()==friendlySnake.getxPositionSnakeTail()&&
+                        angrySnake.getyPositionSnakeHead()==friendlySnake.getyPositionSnakeTail()){
+                    return true;
+                }
+            }
+        }
+        for (AngrySnake angrySnake:angrySnakes){
+            for (NormalSnake normalSnake:normalSnakes){
+                if (angrySnake.getxPositionSnakeHead()==normalSnake.getxPositionSnakeTail()&&
+                        angrySnake.getyPositionSnakeHead()==normalSnake.getyPositionSnakeTail()){
+                    return true;
+                }
+            }
+        }
+        for (FriendlySnake friendlySnake:friendlySnakes){
+            for (NormalSnake normalSnake:normalSnakes){
+                if (friendlySnake.getxPositionSnakeHead()==normalSnake.getxPositionSnakeTail()&&
+                        friendlySnake.getyPositionSnakeHead()==normalSnake.getyPositionSnakeTail()){
+                    return true;
+                }
+            }
+        }
+        for (FriendlySnake friendlySnake:friendlySnakes){
+            for (AngrySnake angrySnake:angrySnakes){
+                if (friendlySnake.getxPositionSnakeHead()==angrySnake.getxPositionSnakeTail()&&
+                        friendlySnake.getyPositionSnakeHead()==angrySnake.getyPositionSnakeTail()){
+                    return true;
+                }
+            }
+        }
+        for (NormalSnake normalSnake:normalSnakes){
+            for (FriendlySnake friendlySnake:friendlySnakes){
+                if (normalSnake.getxPositionSnakeHead()==friendlySnake.getxPositionSnakeTail()&&
+                        normalSnake.getyPositionSnakeHead()==friendlySnake.getyPositionSnakeTail()){
+                    return true;
+                }
+            }
+        }
+        for (NormalSnake normalSnake:normalSnakes){
+            for (AngrySnake angrySnake:angrySnakes){
+                if (normalSnake.getxPositionSnakeHead()==angrySnake.getxPositionSnakeTail()&&
+                        normalSnake.getyPositionSnakeHead()==angrySnake.getyPositionSnakeTail()){
+                    return true;
+                }
+            }
+        }
+        return false;}
 }

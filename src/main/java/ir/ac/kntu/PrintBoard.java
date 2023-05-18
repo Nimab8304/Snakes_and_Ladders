@@ -11,23 +11,23 @@ public class PrintBoard {
         System.out.println("Dice: " + DiceEnum.values()[side]);
         System.out.print("Health: " );
         for (int i = 0; i < player.getHeart(); i++) {
-            System.out.print("♥ ");
+            System.out.print("\u001B[31m"+"♥ "+"\033[0m");
         }
         System.out.println("\n");
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
-                if (board[i][j].equals("1")) {
+                if (board[i][j].startsWith("1")) {
                     System.out.print(" * |");
                     board[i][j] = "0";
                 } else if (board[i][j].equals("0")) {
                     System.out.print("   |");
                 } else {
-                    System.out.print(board[i][j] + " | ");
+                    System.out.print(board[i][j].substring(1) + " | ");
                 }
             }
             System.out.print("\n");
             if (i < board.length - 1) {
-                for (int j = 0; j < board.length * 2; j++) {
+                for (int j = 0; j < board.length * 2+3; j++) {
                     System.out.print("- ");
                 }
             }
